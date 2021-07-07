@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bwf.shop.admin.mapper.BrandMapper">
+    <select id="getAllBrandList" resultMap="Brand">
+        select * from  brand order by  sortno,id ;
+
+
+    </select>
+
+    <resultMap id="Brand" type="com.bwf.shop.admin.bean.po.Brand">
+        <id property="id" column="id"></id>
+        <result property="brand_name" column="brand_name"></result>
+        <result property="brand_introduction" column="brand_introduction"></result>
+        <result property="brand_logourl" column="brand_logourl"></result>
+        <result property="sortno" column="sortno"></result>
+        <result property="createtime" column="createtime"></result>
+        <result property="updatetime" column="updatetime"></result>
+
+    </resultMap>
+
+</mapper>

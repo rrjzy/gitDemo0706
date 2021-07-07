@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bwf.shop.admin.mapper.AdminMapper">
+    <select id="getAdminByName" resultMap="Admin" >
+        select  * from  admin where admin_name = #{admin_name}
+    </select>
+
+
+    <select id="getAdminList" resultMap="Admin">
+        select a.*
+         from `admin` a
+            inner  join  admin_role b on a.admin_id =b.admin_id
+        <where>
+            <if test="bo.admin_id !=null">
+                a.admin_id = #{bo.admin_id}
+            </if>
+            <if test="bo.admin_name !=null and bo.admin_name.length !=0">
+              and  a.admin_name  like '%${bo.admin_name}%'
+            </if>
+            <if test="bo.admin_nickname !=null and bo.admin_nickname.length !=0">
+                and  a.admin_nickname  like '%${bo.admin_nickname}%'
+            </if>
+            <if test="bo.role_id !=null">
+                and  b.role_id  = #{bo.role_id}
+            </if>
+
+        </where>
+
+    </select>
+
+    <!-- 添加员工
+         useGeneratedKeys : 映射主键自增的开关
+         keyProperty: 主键的属性名
+    -->
+    <insert id="addAdmin" useGeneratedKeys="true" keyProperty="admin_id" >
+        insert into  `admin` (admin_name,admin_pass,admin_nickname)
+        values (#{bo.admin_name},#{bo.admin_pass},#{bo.admin_nickname})
+    </insert>
+
+    <insert id="addAdminRole">
+        insert into admin_role(admin_id,role_id)
+        values (#{admin_id},#{role_id})
+    </insert>
+
+
+    <select id="getAdminById" resultMap="Admin">
+        select * from  `admin`  where admin_id =#{admin_id}
+
+    </select>
+
+    <update id="updateAdmin">
+        update  `admin`
+        <set>
+            <if test="bo.admin_pass !=null and bo.admin_pass>0">
+                admin_pass =#{bo.admin_pass},
+            </if>
+
+            <if test="bo.admin_nickname !=null and bo.admin_nickname.length>0">
+                admin_nickname =#{bo.admin_nickname}
+            </if>
+
+        </set>
+        where  admin_id = #{bo.admin_id}
+    </update>
+
+    <delete id="deleteOne">
+        delete  from  `admin` where admin_id = #{admin_id}
+    </delete>
+
+
+    <delete id="deleteList">
+        delete  from  `admin` where admin_id in
+        <foreach collection="ids" item="id" open="(-1," close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+    <delete id="deleteAdminRoles">
+        delete  from   admin_role  where  admin_id = #{admin_id}
+    </delete>
+
+    <resultMap id="Admin" type="com.bwf.shop.admin.bean.po.Admin">
+        <id property="admin_id" column="admin_id"></id>
+        <result property="admin_name" column="admin_name"></result>
+        <result property="admin_pass" column="admin_pass"></result>
+        <result property="admin_nickname" column="admin_nickname"></result>
+
+        <collection
+                property="roleList"
+                ofType="com.bwf.shop.admin.bean.po.Role"
+                column="admin_id"
+                select="com.bwf.shop.admin.mapper.RoleMapper.getRoleListByAdminId"
+                fetchType="lazy"
+        >
+        </collection>
+        <collection property="menuList"
+                    ofType="com.bwf.shop.admin.bean.po.Menu"
+                    column="admin_id"
+                    select="com.bwf.shop.admin.mapper.MenuMapper.getMenuListByAdminId"
+                    fetchType="lazy"
+        ></collection>
+
+
+    </resultMap>
+
+</mapper>

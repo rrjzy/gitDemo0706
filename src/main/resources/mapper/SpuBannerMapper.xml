@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bwf.shop.admin.mapper.SpuBannerMapper">
+    <insert id="addSpuBannerList">
+        insert  into  spu_banner
+        (spu_banner_name,spu_banner_urls,createtime,updatetime,spu_banner_spu_id)
+        values
+        <foreach collection="spuBannerAddBoList" item="spuBannerAddBo" separator=",">
+            (
+                #{spuBannerAddBo.spu_banner_name},
+                #{spuBannerAddBo.spu_banner_urls},
+                #{spuBannerAddBo.createtime},
+                #{spuBannerAddBo.updatetime},
+                #{spu_id}
+
+            )
+        </foreach>
+
+    </insert>
+</mapper>

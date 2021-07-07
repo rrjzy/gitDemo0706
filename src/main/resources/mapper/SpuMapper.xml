@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bwf.shop.admin.mapper.SpuMapper">
+
+    <insert id="addSpu" useGeneratedKeys="true" keyProperty="id">
+        insert  into  spu(
+            spu_name,
+            spu_thumburl,
+            spu_price,
+            spu_title,
+            spu_introduction,
+            spu_warningstock,
+            spu_maxbuy,
+            spu_unit,
+            spu_status,
+            createtime,
+            updatetime,
+            spu_brand_id,
+            spu_category_id,
+            spu_stock
+
+        ) values (
+           #{bo.spu_name},
+           #{bo.spu_thumburl},
+           #{bo.spu_price},
+           #{bo.spu_title},
+           #{bo.spu_introduction},
+           #{bo.spu_warningstock},
+           #{bo.spu_maxbuy},
+           #{bo.spu_unit},
+           #{bo.spu_status},
+           #{bo.createtime},
+           #{bo.updatetime},
+           #{bo.spu_brand_id},
+           #{bo.spu_category_id},
+           #{bo.spu_stock}
+
+
+        )
+    </insert>
+
+
+
+</mapper>

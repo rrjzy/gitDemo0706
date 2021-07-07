@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bwf.shop.admin.mapper.RoleMapper">
+    <select id="getRoleListByAdminId" resultMap="Role">
+        SELECT a.*
+        FROM role a
+            INNER JOIN	admin_role b ON a.`role_id` =b.`role_id`
+        WHERE b.`admin_id`= #{admin_id}
+    </select>
+
+    <select id="getRoleListByOperateUrl" resultMap="Role">
+        SELECT e.*
+        FROM operate a
+                 INNER JOIN permission_operate b ON a.`operate_id`=b.`operate_id`
+                 INNER JOIN	permission c ON  b.`permission_id` = c.`permission_id`
+                 INNER JOIN role_permission d ON c.`permission_id` =d.`permission_id`
+                 INNER JOIN  `role` e ON d.`role_id` =e.`role_id`
+
+        WHERE a.`operate_url` = #{operate_url}
+    </select>
+
+    <select id="getAllRoleList" resultMap="Role">
+        select  * from  `role`
+    </select>
+
+
+    <select id="getRoleList" resultMap="Role">
+        select * from  role
+        <where>
+            <if test="bo.role_id !=null">
+                role_id = #{bo.role_id}
+            </if>
+
+            <if test="bo.role_name !=null and bo.role_name.length>0">
+                and role_name like '%${bo.role_name}%'
+            </if>
+
+        </where>
+
+    </select>
+
+    <resultMap id="Role" type="com.bwf.shop.admin.bean.po.Role">
+        <id property="role_id" column="role_id"></id>
+        <result property="role_name" column="role_name"></result>
+    </resultMap>
+
+</mapper>
